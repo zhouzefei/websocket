@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.min.css"/>
+    <script src="./jquery/dist/jquery.min.js"></script>
+    <script src="./bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="vertical-center">
+        <div class="container">
+            
+        </div>
+    </div>
+    <script>
+        var ws = new WebSocket('ws://localhost:8181');
+        ws.onopen = function(e){
+            console.log('Connection to server opened');
+            ws.send('给我数据');
+        };
+        //处理收到的消息
+        ws.onmessage = function(e){
+            console.log(e);
+            $('.container').html('接到的数据值：'+e.data);
+            if(e.data-0>50){
+                info('当前的值等于'+e.data);
+            }
+        };
+        
+
+        //通知
+        function info(str){
+            if (!window.Notification) {
+                alert("浏览器不支持通知！");
+            }
+    　　　　　if (window.Notification.permission != 'granted') {
+    　　          Notification.requestPermission(function (status) {
+                    //status是授权状态，如果用户允许显示桌面通知，则status为'granted'
+                    console.log('status: ' + status);
+                    //permission只读属性:
+                    //  default 用户没有接收或拒绝授权 不能显示通知
+                    //  granted 用户接受授权 允许显示通知
+                    //  denied  用户拒绝授权 不允许显示通知
+                    var permission = Notification.permission;
+                    console.log('permission: ' + permission);
+                });
+            }
+            var n = new Notification("您有一条消息！", { "icon": "", "body": str });
+            n.onshow = function () { 
+                console.log("显示通知"); 
+                setTimeout(function () { 
+                    n.close() 
+                }, 2000); 
+            }; 
+            n.onclick = function () { 
+                alert("打开相关视图"); 
+                window.open("/Home/about"); 
+                n.close(); 
+            }; 
+            n.onclose = function () { 
+                console.log("通知关闭"); 
+            }; 
+            n.onerror = function () { 
+                console.log('产生错误'); 
+            };
+        }
+    </script>
+</body>
+</html>
