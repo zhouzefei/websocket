@@ -28,12 +28,7 @@ app.use('/', index);
 
 //websocket用例
 var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port:8181 });
-var params = {
-  'zzf':18,
-  'fmk':20
-};
-
+var wss = new WebSocketServer({ port:8888 });
 wss.on('connection',function(ws){
   console.log('client connected');
   //接收客户端请求参数

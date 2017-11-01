@@ -16,7 +16,7 @@
         </div>
     </div>
     <script>
-        var ws = new WebSocket('ws://localhost:8181');
+        var ws = new WebSocket('ws://localhost:8888');
         ws.onopen = function(e){
             console.log('Connection to server opened');
             ws.send('给我数据');
